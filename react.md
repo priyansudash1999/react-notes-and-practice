@@ -166,3 +166,91 @@ export default defineConfig([
     }
     ```
     - Here `Card` is a component and used in App.jsx
+
+### 9. Props:-
+- Props stand for properties are used to pass data from one component to other- typically from a parent component to child component.
+```js
+import React from 'react'
+
+const Card = ({name}) => {
+  return (
+    <div className='bg-amber-300 px-4 py-2 text-center'>
+      <h1 className='text-2xl mb-2'>Card</h1>
+      <p className=''>Hello I am {name}'s card</p>
+    </div>
+  )
+}
+
+export default Card
+```
+
+```js
+import React from 'react'
+import Card from './components/Card'
+
+const App = () => {
+  return (
+    <div>
+      <Card name={"Priyansu"}/>
+    </div>
+  )
+}
+
+export default App
+```
+
+- In this case, Card is a child component and App is parent component. here name which is a properties pass from App can use in Card via props drilling.
+> #### What is props drilling ?
+- Passing props from parent to child and so on known as props drilling.
+
+- ##### **Things to remember**
+    - Props are read only means can not change in child component.
+    - We can pass mulltiple props. _*if we pass written as props we can access like props.name or props.email like that*_. If we pass multiple props we have to use curly braces if we have not use any single name props 
+    ```js
+    import React from 'react'
+    import Card from './components/Card'
+
+    const App = () => {
+    return (
+        <div>
+        <Card name={"Priyansu"} email={"HgYbG@example.com"}/>
+        </div>
+    )
+    }
+
+    export default App
+    ```
+    ```js
+    import React from 'react'
+
+    const Card = ({name, email}) => {
+    return (
+        <div className='bg-amber-300 px-4 py-2 text-center'>
+        <h1 className='text-2xl mb-2'>Card</h1>
+        <p className=''>Hello I am {name}'s card</p>
+        <p>{email}</p>
+        </div>
+    )
+    }
+
+    export default Card
+
+    ```
+
+    > We can do the same thing by writing props only
+    ```js
+    import React from 'react'
+
+    const Card = (props) => {
+    return (
+        <div className='bg-amber-300 px-4 py-2 text-center'>
+        <h1 className='text-2xl mb-2'>Card</h1>
+        <p className=''>Hello I am {props.name}'s card</p>
+        <p>{props.email}</p>
+        </div>
+    )
+    }
+
+    export default Card
+
+    ```
