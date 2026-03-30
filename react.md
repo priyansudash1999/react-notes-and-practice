@@ -254,4 +254,228 @@ export default App
     export default Card
 
     ```
+
+### 10. Hooks in React:-
+- Hooks are functions that let you use React features (state, lifecycle, etc.) inside functional components.
+- Before hooks:- Only class components could use state & lifecycle
+- After hooks: Functional components can do everything ✅
+- There are many hooks in react.
+    - **useState Hook**:- Manage state or we can say that used to store data and update the data in a component.
+    - **useEffect Hook**:- Manage side effects
+        - Used for api calls, times, DOM updates etc...
+        - syntax:- `useEffect(() => {}, [])`
+    - **useRef** :- useRef is a React Hook that gives you a persistent, mutable reference that does NOT cause re-renders when it changes.
+        - Used for select something.
+        - Get reference of something.
+    - **useContext** :-
+        - Manage global contexts in react.
+        - We use props drilling via grandparents to parents then child then grandchild and so on..
+        - But useContext gives me chance to connect with grandparents and grandchild rather than step wise via keeps it globally.
+    - **useReducer**:- Manage complex logic.
+        - Do the same thing what useState does means i mean to say that useState can do work for simple logic like change a variable but useReducer can work on complex logic where there are many conditions.
+        ```js
+        const reducer = (state, action) => {
+        switch(action.type){
+            case "increment":
+            return { count: state.count + 1 }
+            case "decrement":
+            return { count: state.count - 1 }
+            default:
+            return state
+        }
+        }
+
+        const [state, dispatch] = useReducer(reducer, { count: 0 })
+        ```
+        | Feature         | useState 🟢    | useReducer 🔵           |
+        | --------------- | -------------- | ----------------------- |
+        | Complexity      | Simple         | Complex logic           |
+        | Code Style      | Direct         | Structured (Redux-like) |
+        | Multiple States | Hard to manage | Easy                    |
+        | Debugging       | Hard           | Easier                  |
+        | Scalability     | Low            | High                    |
+
+        > Difference through code
+        - Lets think there is a condition where we have to save the count, step and history of a user and also need to change while increase.
+        > If we use useState:
+        ```js
+        const [count, setCount] = useState(0)
+        const [step, setStep] = useState(1)
+        const [history, setHistory] = useState([])
+
+        // logic spread everywhere
+        ```
+        > If we use useReducer:-
+        ```js
+        const reducer = (state, action) => {
+        switch(action.type){
+            case "increment":
+            return {
+                ...state,
+                count: state.count + state.step,
+                history: [...state.history, state.count]
+            }
+            default:
+            return state
+        }
+        }
+        ```
+        - Where to use what ?
+            - useState:
+                - form input
+                - toggle
+                - count
+                - simple UI state
+            - useReducer:
+                - form with many fields
+                - complex state transitions
+                - Dashboard /large apps
+                - When logic becomes messy
+    - **useMemo** :- For optimization, avoid unnecessary re-renders for value only
+        ```js
+        import React, { useMemo, useState } from 'react'
+
+        const ExpensiveComponent = () => {
+        const [count, setCount] = useState(0)
+
+        const expensiveCalculation = (num) => {
+            console.log("Calculating...")
+            return num * 2
+        }
+
+        const result = useMemo(() => {
+            return expensiveCalculation(count)
+        }, [count])
+
+        return (
+            <>
+            <p>Result: {result}</p>
+            <button onClick={() => setCount(count + 1)}>Increase</button>
+            </>
+        )
+        }
+        ```
+        - In this code count does not re-render in every time, but rerender when the count value changes.
+    - **useCallback** :- Same as useMemo but act for functions.
+
+        ```js
+        import React, { useState, useCallback } from 'react'
+
+        const Parent = () => {
+        const [count, setCount] = useState(0)
+
+        const handleClick = useCallback(() => {
+            console.log("Clicked")
+        }, [])
+
+        return (
+            <>
+                <Child onClick={handleClick} />
+                <button onClick={() => setCount(count + 1)}>Increase</button>
+            </>
+        )
+        }
+
+        const Child = React.memo(({ onClick }) => {
+        console.log("Child Rendered")
+        return <button onClick={onClick}>Click</button>
+        })
+        ```
+        - Here handleClick does not re-render every single time but when click on the button it only re-renders
     
+#### 1. useState :-
+- We use react useState hook to handle a variable and a function to change the value of this variable and main important thing also re-render with this.
+- Ex:-
+    ```js
+    import React from 'react'
+
+    const App = () => {
+    var num = 0
+    const setNum = () => {
+        num += 1
+        console.log(num)
+    }
+    return (
+        <div>
+        <h2>Value: {num}</h2>
+        <button onClick={setNum}>Increment</button>
+        </div>
+    )
+    }
+
+    export default App
+
+    ```
+    - In this code we can change the value but it automatically does not show in UI.
+    > Now the question is without useState can our value renders in UI.
+    - Answer is yes but we have to use useRef and a force re-redner. those are completely messy.
+    - ans:- "React does not track normal variables. Only state updates trigger re-renders, which is why useState is required for updating UI."
+    > Then how useState can do that ?
+    - ans:- It is compltely internal core or react. useState stores data outside of the componet. It tells react when to re-render.
+
+    > Using useState
+
+    ```js
+    import React from 'react'
+    import { useState } from 'react'
+
+    const App = () => {
+    const [num,setNum] = useState(0)
+    return (
+        <div>
+            <h2>Value: {num}</h2>
+            <button onClick={() => setNum(num + 1)}>Increment</button>
+        </div>
+    )
+    }
+
+    export default App
+    ```
+    > Interview Question
+    ```js
+    import React from 'react'
+    import { useState } from 'react'
+
+    const App = () => {
+    const [num, setNum] = useState(0)
+    const handleIncrease = () => {
+        setNum(num + 1)
+        console.log(num)
+    }
+    return (
+        <div>
+        <h1>{num}</h1>
+        <button onClick={() => handleIncrease()}>Click</button>
+        </div>
+    )
+    }
+
+    export default App
+    ```
+    > What print on console after first click and what renders in ui page also ?
+    - In console there is 0 print but in UI page 1 renders becasue setNum works asynchronously. It goes to event loop, between that time console get printed.
+
+    > Change an object using useState
+    ```js
+    import React from 'react'
+    import { useState } from 'react'
+
+    const App = () => {
+    const [user, setUser] = useState({name: "priyansu", age: 20})
+    const handleIncrease = () => {
+        setUser({...user, age: user.age+1})
+        console.log(user)
+    }
+    return (
+        <div>
+        <h1>{user.name}</h1>
+        <h2>{user.age}</h2>
+        <button onClick={() => handleIncrease()}>Click</button>
+        </div>
+    )
+    }
+
+    export default App
+    ```
+
+### 11. Form Handling in react:-
