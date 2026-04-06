@@ -506,4 +506,36 @@ export default App
 - Form has a default behaviour when its submitted it reload the page, we have to prevent it using `preventDefault()`.
 
 
-#### Two way binding in react :-
+#### 12. Two way binding in react :-
+- React doesn’t have “true” two-way data binding like Angular (ngModel). Instead, it follows a one-way data flow, but we can achieve two-way binding behavior using state + event handlers.
+- **How it works in react ?**:-
+    - We store the data in state
+    - Display it in the input as value
+    - Update state on user input as onChange.
+    ```js
+    import React, { useState } from 'react'
+
+    const App = () => {
+    const [name, setName] = useState("");
+
+    const handleChange = (e) => {
+        setName(e.target.value);
+    };
+
+    return (
+        <div>
+        <input 
+            type="text" 
+            value={name} 
+            onChange={handleChange} 
+        />
+        <p>You typed: {name}</p>
+        </div>
+    );
+    }
+
+    export default App
+
+    ```
+    - Here we set the name as value of input. then change using useState.
+    
