@@ -506,7 +506,7 @@ export default App
 - Form has a default behaviour when its submitted it reload the page, we have to prevent it using `preventDefault()`.
 
 
-#### 12. Two way binding in react :-
+### 12. Two way binding in react :-
 - React doesn’t have “true” two-way data binding like Angular (ngModel). Instead, it follows a one-way data flow, but we can achieve two-way binding behavior using state + event handlers.
 - **How it works in react ?**:-
     - We store the data in state
@@ -538,4 +538,27 @@ export default App
 
     ```
     - Here we set the name as value of input. then change using useState.
-    
+
+### 13. localStorage :-
+- localStorage is a web API in JavaScript that lets us store data in the browser persistently (it stays even after refresh or closing the tab).
+- Basic Usage:-
+    - save data:- `localStorage.setItem("key", "value")`
+    - get data:- `localStorage.getIten("key")`
+    - remove data:- `localStorage.removeItem("key")`
+    - clear everything:- `localStorage.clear()`
+- Example:-
+    ```js
+    const user = { name: "John", age: 25 };
+
+    // Save
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // Get
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    ```
+- key points:-
+    - Data persists across browser sessions.
+    - Storage limit ~5mb (varies by browser).
+    - Same origin only (domain specific).
+    - Synchronous
+
